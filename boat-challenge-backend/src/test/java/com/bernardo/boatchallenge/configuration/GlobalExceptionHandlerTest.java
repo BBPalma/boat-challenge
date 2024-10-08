@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleExpiredJwtException(ex);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("Invalid username or password.", response.getBody().getMessage());
+        assertEquals("Invalid username or password.", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -37,7 +38,7 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleExpiredJwtException(ex);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("Authentication failed.", response.getBody().getMessage());
+        assertEquals("Authentication failed.", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -51,7 +52,7 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleValidationExceptions(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("{\"field\":\"defaultMessage\"}", response.getBody().getMessage());
+        assertEquals("{\"field\":\"defaultMessage\"}", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -61,7 +62,7 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleDataIntegrityViolationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Duplicate object found", response.getBody().getMessage());
+        assertEquals("Duplicate object found", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -71,7 +72,7 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleDataIntegrityViolationException(ex);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("An error occurred: Some other exception", response.getBody().getMessage());
+        assertEquals("An error occurred: Some other exception", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
@@ -81,6 +82,6 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = globalExceptionHandler.handleGeneralException(ex);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("An error occurred: General error", response.getBody().getMessage());
+        assertEquals("An error occurred: General error", Objects.requireNonNull(response.getBody()).getMessage());
     }
 }
