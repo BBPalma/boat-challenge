@@ -16,51 +16,59 @@ const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", descripti
           [e.target.name]: e.target.value,
         });
       };
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      onSubmit(formState);
+    }
 
     return(
       <Box p={8}>
-        <Stack spacing={4}>
-          <FormControl id="name" isRequired>
-            <FormLabel>Boat Name</FormLabel>
-            <Input
-              name="name"
-              value={formState.name}
-              onChange={handleInputChange}
-              placeholder="Boat name"
-            />
-          </FormControl>
-          <FormControl id="description" isRequired>
-            <FormLabel>Description</FormLabel>
-            <Input
-              name="description"
-              value={formState.description}
-              onChange={handleInputChange}
-              placeholder="Boat description"
-            />
-          </FormControl>
-          <FormControl id="date">
-            <FormLabel>Date</FormLabel>
-            <Input
-              name="date"
-              type='date'
-              value={formState.date}
-              onChange={handleInputChange}
-              placeholder="Boat date"
-            />
-          </FormControl>
-          <FormControl id="length">
-            <FormLabel>Length</FormLabel>
-            <Input
-              name="length"
-              value={formState.length}
-              onChange={handleInputChange}
-              placeholder="Boat length"
-            />
-          </FormControl>
-          <Button colorScheme="teal" onClick={() => onSubmit(formState)}>
-            Save Boat
-          </Button>
-        </Stack>
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={4}>
+            <FormControl id="name" isRequired>
+              <FormLabel>Boat Name</FormLabel>
+              <Input
+                name="name"
+                value={formState.name}
+                onChange={handleInputChange}
+                placeholder="Boat name"
+              />
+            </FormControl>
+            <FormControl id="description" isRequired>
+              <FormLabel>Description</FormLabel>
+              <Input
+                name="description"
+                value={formState.description}
+                onChange={handleInputChange}
+                placeholder="Boat description"
+              />
+            </FormControl>
+            <FormControl id="date">
+              <FormLabel>Date</FormLabel>
+              <Input
+                name="date"
+                type='date'
+                value={formState.date}
+                onChange={handleInputChange}
+                placeholder="Boat date"
+              />
+            </FormControl>
+            <FormControl id="length">
+              <FormLabel>Length</FormLabel>
+              <Input
+                name="length"
+                value={formState.length}
+                onChange={handleInputChange}
+                placeholder="Boat length"
+              />
+            </FormControl>
+            <Button type="submit">
+              Save Boat
+            </Button>
+          </Stack>
+        </form>
       </Box>
     );
 };

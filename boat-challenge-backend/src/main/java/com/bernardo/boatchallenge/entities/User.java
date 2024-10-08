@@ -6,12 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -23,7 +19,7 @@ public class User{
 
     @NotBlank(message = "Username is required")
     @Size(max = 50, message = "Name must not exceed 50 characters")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, columnDefinition="VARCHAR_IGNORECASE(50)")
     private String username;
 
     @NotBlank(message = "Password is required")

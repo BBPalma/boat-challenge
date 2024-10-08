@@ -42,9 +42,7 @@ const BoatDetails: React.FC = () => {
         <>
           <HStack spacing='24px'>
             <Heading mb={6}>{boat.name}</Heading>
-            <IconButton 
-                  colorScheme='teal' 
-                  variant='outline' 
+            <IconButton
                   onClick={() => navigate(`/boats/edit/${boat.id}`)}
                   aria-label='Edit Boat'
                   icon={<EditIcon/>}
@@ -62,7 +60,7 @@ const BoatDetails: React.FC = () => {
             <Text fontSize="lg" mb={4}>
               Description: {boat.length} meters
             </Text>}
-          <Button colorScheme="teal" size="md" onClick={() => handleBackToList()}>
+          <Button size="md" onClick={() => handleBackToList()}>
             Back to List
           </Button>
         </>

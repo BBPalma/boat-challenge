@@ -4,6 +4,7 @@ import com.bernardo.boatchallenge.dto.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,6 +50,20 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(Exception ex) {
+        if (ex.getMessage().contains("Unique index")) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    "Duplicate object found",
+                    HttpStatus.BAD_REQUEST.value()
+            );
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        return handleGeneralException(ex);
     }
 
     // Handle other exceptions as needed

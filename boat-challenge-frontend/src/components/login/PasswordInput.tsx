@@ -1,5 +1,6 @@
-import { InputGroup, Input, InputRightElement, Button } from "@chakra-ui/react";
+import { InputGroup, Input, InputRightElement, Button, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 interface PasswordInputProps {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,10 +18,15 @@ const PasswordInput: React.FC<PasswordInputProps > = ({ onChange }) => {
           placeholder='Enter password'
           onChange={onChange}
         />
-        <InputRightElement width='4.5rem'>
-          <Button h='1.75rem' size='sm' onClick={handleClick}>
-            {show ? 'Hide' : 'Show'}
-          </Button>
+        <InputRightElement >
+          <IconButton
+            variant='ghost'
+            onClick={handleClick} 
+            aria-label='Show/Hide password'
+            icon={show ? <ViewOffIcon/> : <ViewIcon/>}
+            size='sm'
+            isRound={true}
+          />
         </InputRightElement>
       </InputGroup>
     )

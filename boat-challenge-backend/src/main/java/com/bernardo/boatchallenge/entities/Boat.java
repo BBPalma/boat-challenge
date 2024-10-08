@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.Year;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -18,14 +17,14 @@ public class Boat {
 
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must not exceed 100 characters")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, columnDefinition="VARCHAR_IGNORECASE(100)")
     private String name;
 
     @NotBlank(message = "Description is required")
     @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
-    @Column(name="`date`")
+    @Column(name="`DATE`")
     private Date date;
 
     private String length;

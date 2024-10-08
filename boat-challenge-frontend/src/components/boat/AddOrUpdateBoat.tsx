@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addBoat, updateBoat, fetchBoatById } from '../../services/boat';
-import { Flex, Spinner, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, Spinner, useToast } from '@chakra-ui/react';
 import { BoatContent } from '../../types/boat';
 import BoatForm from './BoatForm';
 
@@ -42,6 +42,7 @@ const AddOrUpdateBoat: React.FC = () => {
           fetchBoatDetails();
         } else {
             setIsEditMode(false); // Set the component to add mode if no `id` is provided
+            setLoading(false);
         }
     }, [id]);
 
@@ -68,7 +69,7 @@ const AddOrUpdateBoat: React.FC = () => {
           isClosable: true,
         });
         
-        navigate('/boats'); // Navigate back to boat list after a delay
+        navigate(-1);
 
       } catch (err) {
           toast({
@@ -90,14 +91,12 @@ const AddOrUpdateBoat: React.FC = () => {
     }
 
     return (
-        <div>
-            <h1>{isEditMode ? 'Update Boat' : 'Add New Boat'}</h1>
-
-            <BoatForm 
-              onSubmit={handleSubmit} 
-              initialData={boatContent}/>
-            
-        </div>
+      <Box p={8}>
+        <Heading mb={6}>{isEditMode ? 'Update Boat' : 'Add New Boat'}</Heading>
+        <BoatForm 
+            onSubmit={handleSubmit} 
+            initialData={boatContent}/>    
+      </Box>
     );
 };
 

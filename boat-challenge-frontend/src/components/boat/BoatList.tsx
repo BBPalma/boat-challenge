@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchBoats, deleteBoat } from '../../services/boat';
 import { Boat } from '../../types/boat';
 
-import { Box, Button, Heading, Text, IconButton, Stack, useToast, Flex } from '@chakra-ui/react';
+import { Box, Heading, Text, IconButton, Stack, useToast, Flex, Button } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const BoatList: React.FC = () => {
@@ -30,8 +30,20 @@ const BoatList: React.FC = () => {
     getBoats();
   }, [toast]);
 
+  // Handle clicking on a boat to see details
+  const handleViewDetails = (boatId: number) => {
+    navigate(`/boats/${boatId}`);
+  };
+
+  // Handle opening boat editing
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, boatId: number) => {
+    e.stopPropagation();
+    navigate(`/boats/edit/${boatId}`);
+  }
+
   // Handle deleting a boat
-  const handleDelete = async (boatId: number) => {
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, boatId: number) => {
+    e.stopPropagation();
     try {
         await deleteBoat(boatId);
         setBoats(boats.filter(boat => boat.id !== boatId)); // Remove the deleted boat from the state
@@ -46,18 +58,11 @@ const BoatList: React.FC = () => {
     }
   };
 
-  // Handle clicking on a boat to see details
-  const handleViewDetails = (boatId: number) => {
-      navigate(`/boats/${boatId}`);
-  };
-
   return (
     <Box p={8}>
       <Heading mb={6} textAlign="center">
         Boats List
       </Heading>
-
-      <Button colorScheme='teal' variant='outline' onClick={() => navigate('/boats/new')}>Add New Boat</Button>
 
       {boats.length === 0 ? (
         <Text textAlign="center" fontSize="xl" color="gray.500">
@@ -65,6 +70,8 @@ const BoatList: React.FC = () => {
         </Text>
       ) : (
         <Stack spacing={5}>
+          <Button onClick={() => navigate('/boats/new')}>Add New Boat</Button>
+
           {boats.map((boat) => (
             <Box
               key={boat.id}
@@ -72,6 +79,10 @@ const BoatList: React.FC = () => {
               shadow='md' 
               borderWidth='1px'
               borderRadius='lg'
+              backgroundColor="white"
+              cursor="pointer"
+              _hover={{ boxShadow: "lg", bg:"gray.100", transition: "all 0.2s ease-in-out" }}
+              onClick={() => handleViewDetails(boat.id)}
             >
               <Flex justify="space-between" align="center">
                 <Box>
@@ -81,22 +92,13 @@ const BoatList: React.FC = () => {
                   </Text>
                 </Box>
                 <Stack direction='row' spacing={2} align='center'>
-                  <Button 
-                    colorScheme='teal' 
-                    variant='outline' 
-                    onClick={() => handleViewDetails(boat.id)}
-                    size="sm">View Details</Button>
                   <IconButton 
-                    colorScheme='teal' 
-                    variant='outline' 
-                    onClick={() => navigate(`/boats/edit/${boat.id}`)}
+                    onClick={(e) => handleEdit(e, boat.id)}
                     aria-label='Edit Boat'
                     icon={<EditIcon/>}
                     size="sm"/>
                   <IconButton 
-                    colorScheme='teal' 
-                    variant='outline' 
-                    onClick={() => handleDelete(boat.id)}
+                    onClick={(e) => handleDelete(e, boat.id)}
                     aria-label='Delete Boat'
                     icon={<DeleteIcon/>}
                     size="sm"/>
