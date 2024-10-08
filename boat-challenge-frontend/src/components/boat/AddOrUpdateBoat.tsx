@@ -44,7 +44,7 @@ const AddOrUpdateBoat: React.FC = () => {
             setIsEditMode(false); // Set the component to add mode if no `id` is provided
             setLoading(false);
         }
-    }, [id]);
+    }, [id, toast]);
 
     const handleSubmit = async (boatContent: BoatContent) => {
       let errorMessage = 'Something went wrong';

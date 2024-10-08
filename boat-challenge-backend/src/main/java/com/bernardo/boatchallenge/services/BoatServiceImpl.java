@@ -22,7 +22,6 @@ public class BoatServiceImpl implements BoatService {
     }
 
     public Boat getBoatById(long id) {
-        //TODO return better exception
         return boatRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Boat not found: " + id));
     }

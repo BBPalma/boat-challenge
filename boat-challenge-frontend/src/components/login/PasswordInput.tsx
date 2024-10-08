@@ -1,4 +1,4 @@
-import { InputGroup, Input, InputRightElement, Button, IconButton } from "@chakra-ui/react";
+import { InputGroup, Input, InputRightElement, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 

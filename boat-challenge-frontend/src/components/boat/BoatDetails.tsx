@@ -30,7 +30,7 @@ const BoatDetails: React.FC = () => {
     };
 
     getBoatDetails();
-  }, [id]);
+  }, [id, toast]);
 
   const handleBackToList = () => {
     navigate('/boats'); // Navigate back to the boat list

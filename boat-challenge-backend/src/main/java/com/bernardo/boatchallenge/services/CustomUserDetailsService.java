@@ -1,10 +1,14 @@
 package com.bernardo.boatchallenge.services;
 
+import com.bernardo.boatchallenge.dto.AuthResponse;
 import com.bernardo.boatchallenge.dto.CustomUserDetails;
+import com.bernardo.boatchallenge.dto.ErrorResponse;
 import com.bernardo.boatchallenge.entities.User;
 import com.bernardo.boatchallenge.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +40,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public String addUser(User user) {
+        if(user.getUsername() == null || user.getPassword() == null || user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Username and password are required");
+        }
+
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
         // Encode password before saving the user
         user.setPassword(encoder.encode(user.getPassword()));
         user.setCreatedAt(new Date(System.currentTimeMillis()));

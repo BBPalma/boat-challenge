@@ -3,9 +3,11 @@ package com.bernardo.boatchallenge.controllers;
 import com.bernardo.boatchallenge.components.JwtUtil;
 import com.bernardo.boatchallenge.dto.AuthRequest;
 import com.bernardo.boatchallenge.dto.AuthResponse;
+import com.bernardo.boatchallenge.dto.ErrorResponse;
 import com.bernardo.boatchallenge.entities.User;
 import com.bernardo.boatchallenge.services.CustomUserDetailsService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
     public AuthController(CustomUserDetailsService userDetailsService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
@@ -32,8 +35,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signUp(@Valid @RequestBody User user) {
-        return userDetailsService.addUser(user);
+    public ResponseEntity<?> signUp(@Valid @RequestBody User user) {
+        try {
+            return ResponseEntity.ok(userDetailsService.addUser(user));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value()),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/login")
