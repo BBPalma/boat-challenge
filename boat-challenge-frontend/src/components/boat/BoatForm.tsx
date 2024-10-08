@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Stack, useToast } from "@chakra-ui/react";
-import { Boat, BoatContent } from "../../types/boat";
+import { Box, Button, FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
+import { BoatContent } from "../../types/boat";
 
 interface BoatFormProps {
     initialData?: BoatContent;
@@ -9,34 +9,12 @@ interface BoatFormProps {
 
 const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", description: "" }, onSubmit }) => {
     const [formState, setFormState] = useState(initialData);
-    const toast = useToast();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormState({
           ...formState,
           [e.target.name]: e.target.value,
         });
-      };
-    
-    const handleSubmit = async () => {
-      try {
-          await onSubmit(formState);
-          toast({
-            title: "Success",
-            description: "Boat details saved successfully.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "Failed to save boat details.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
       };
 
     return(
@@ -60,7 +38,26 @@ const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", descripti
               placeholder="Boat description"
             />
           </FormControl>
-          <Button colorScheme="teal" onClick={handleSubmit}>
+          <FormControl id="date">
+            <FormLabel>Date</FormLabel>
+            <Input
+              name="date"
+              type='date'
+              value={formState.date}
+              onChange={handleInputChange}
+              placeholder="Boat date"
+            />
+          </FormControl>
+          <FormControl id="length">
+            <FormLabel>Length</FormLabel>
+            <Input
+              name="length"
+              value={formState.length}
+              onChange={handleInputChange}
+              placeholder="Boat length"
+            />
+          </FormControl>
+          <Button colorScheme="teal" onClick={() => onSubmit(formState)}>
             Save Boat
           </Button>
         </Stack>

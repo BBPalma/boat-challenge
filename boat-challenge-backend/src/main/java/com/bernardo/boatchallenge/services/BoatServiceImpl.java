@@ -35,6 +35,8 @@ public class BoatServiceImpl implements BoatService {
         Boat existingBoat = getBoatById(id);
         existingBoat.setName(updatedBoat.getName());
         existingBoat.setDescription(updatedBoat.getDescription());
+        existingBoat.setDate(updatedBoat.getDate());
+        existingBoat.setLength(updatedBoat.getLength());
         return boatRepository.save(existingBoat);
     }
 

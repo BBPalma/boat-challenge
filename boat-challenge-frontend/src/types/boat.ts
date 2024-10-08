@@ -5,6 +5,6 @@ export interface Boat extends BoatContent{
 export interface BoatContent {
     name: string;
     description: string;
-    date?: Date;
+    date?: string;
     length?: number;
 }

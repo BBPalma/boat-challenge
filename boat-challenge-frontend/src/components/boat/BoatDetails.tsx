@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Boat } from '../../types/boat';
 import { fetchBoatById } from '../../services/boat';
-import { useToast, Box, Heading, Button, Text } from '@chakra-ui/react';
+import { useToast, Box, Heading, Button, Text, HStack, IconButton } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
 
 const BoatDetails: React.FC = () => {
   const { id } = useParams<{id: string}>();
@@ -39,8 +40,16 @@ const BoatDetails: React.FC = () => {
     <Box p={8}>
       {boat ? (
         <>
-          <Heading mb={6}>{boat.name}</Heading>
-          <Button colorScheme="teal" size="md" onClick={() => navigate(`/boats/edit/${boat.id}`)}>Edit</Button>
+          <HStack spacing='24px'>
+            <Heading mb={6}>{boat.name}</Heading>
+            <IconButton 
+                  colorScheme='teal' 
+                  variant='outline' 
+                  onClick={() => navigate(`/boats/edit/${boat.id}`)}
+                  aria-label='Edit Boat'
+                  icon={<EditIcon/>}
+                  size="sm"/>
+          </HStack>
           <Text fontSize="lg" mb={4}>
             Description: {boat.description}
           </Text>
