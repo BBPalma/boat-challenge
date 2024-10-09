@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchBoats, deleteBoat } from '../../services/boat';
 import { Boat } from '../../types/boat';
 
-import { Box, Heading, Text, IconButton, Stack, useToast, Flex, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, Text, IconButton, Stack, useToast, Flex, SimpleGrid, HStack } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const BoatList: React.FC = () => {
@@ -60,10 +60,10 @@ const BoatList: React.FC = () => {
 
   return (
     <Box p={8} height="100%" display="flex" flexDirection="column">
-      <Heading>
-        Boats List
-      </Heading>
-      <Flex justifyContent="flex-end" mb={4}>
+      <Flex justify="space-between" align="center" mb={4}>
+        <Heading>
+          Boats List
+        </Heading>
         <IconButton 
           onClick={() => navigate('/boats/new')}
           aria-label='Add Boat'
@@ -72,7 +72,7 @@ const BoatList: React.FC = () => {
           size="sm"
         />
       </Flex>
-      <Box flex="1" overflowY="auto">
+      <Box>
         {boats.length === 0 ? (
           <Text textAlign="center" fontSize="xl" color="gray.500">
             No boats available.

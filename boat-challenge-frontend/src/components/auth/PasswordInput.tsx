@@ -13,13 +13,12 @@ const PasswordInput: React.FC<PasswordInputProps > = ({ onChange }) => {
     return (
       <InputGroup size='md'>
         <Input
-          pr='4.5rem'
           type={show ? 'text' : 'password'}
           placeholder='Enter password (min. 12 characters)'
           onChange={onChange}
           minLength={12}
         />
-        <InputRightElement >
+        <InputRightElement>
           <IconButton
             variant='ghost'
             onClick={handleClick} 

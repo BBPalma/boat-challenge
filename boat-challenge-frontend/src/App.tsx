@@ -4,13 +4,13 @@ import BoatDetails from './components/boat/BoatDetails';
 import AddOrUpdateBoat from './components/boat/AddOrUpdateBoat';
 import Footer from './components/Footer';
 import { Box } from '@chakra-ui/react';
-import AuthForm from './components/login/AuthForm';
+import AuthForm from './components/auth/AuthForm';
 
 function App() {
   return (
     <Router>
       <Box display="flex" flexDirection="column" minHeight="100vh">
-          <Box flex="1" overflow="hidden" display="flex" flexDirection="column">
+          <Box flex="1">
             <Routes>
               <Route path="/" element={<AuthForm mode="login" />} />
               <Route path="/login" element={<AuthForm mode="login" />} />
