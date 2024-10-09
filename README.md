@@ -12,6 +12,8 @@ Decided to implement the authentication using JWT tokens, never had used it so w
 env.properties is commited as well, just to have the proper setup and testing, although normally would be ignored an not added to the repo.
 
 ## Frontend
-Frontend in React.TS, and decided to try ChakraUI for components and styling. Has both a Login and Signup page, fairly simple, just to play around a bit.
+Frontend in React.TS, and decided to try ChakraUI for components and styling. Has both a Login and Signup page, fairly simple, just to play around a bit. npm run dev to start
 
 A default user already exists: owt / HelloWorld42
+
+The token validity is one hour, and the UI has a naive approach to refreshing it (asks the user to login again)
