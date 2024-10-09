@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { fetchBoats, deleteBoat } from '../../services/boat';
 import { Boat } from '../../types/boat';
 
-import { Box, Heading, Text, IconButton, Stack, useToast, Flex, Button } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Box, Heading, Text, IconButton, Stack, useToast, Flex, SimpleGrid } from '@chakra-ui/react';
+import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const BoatList: React.FC = () => {
   const [boats, setBoats] = useState<Boat[]>([]);
@@ -59,55 +59,63 @@ const BoatList: React.FC = () => {
   };
 
   return (
-    <Box p={8}>
-      <Heading mb={6} textAlign="center">
+    <Box p={8} height="100%" display="flex" flexDirection="column">
+      <Heading>
         Boats List
       </Heading>
-
-      {boats.length === 0 ? (
-        <Text textAlign="center" fontSize="xl" color="gray.500">
-          No boats available.
-        </Text>
-      ) : (
-        <Stack spacing={5}>
-          <Button onClick={() => navigate('/boats/new')}>Add New Boat</Button>
-
-          {boats.map((boat) => (
-            <Box
-              key={boat.id}
-              p={5}
-              shadow='md' 
-              borderWidth='1px'
-              borderRadius='lg'
-              backgroundColor="white"
-              cursor="pointer"
-              _hover={{ boxShadow: "lg", bg:"gray.100", transition: "all 0.2s ease-in-out" }}
-              onClick={() => handleViewDetails(boat.id)}
-            >
-              <Flex justify="space-between" align="center">
-                <Box>
-                  <Heading fontSize="xl">{boat.name}</Heading>
-                  <Text mt={2} color="gray.600">
-                    {boat.description}
-                  </Text>
+      <Flex justifyContent="flex-end" mb={4}>
+        <IconButton 
+          onClick={() => navigate('/boats/new')}
+          aria-label='Add Boat'
+          variant='solid'
+          icon={<AddIcon />}
+          size="sm"
+        />
+      </Flex>
+      <Box flex="1" overflowY="auto">
+        {boats.length === 0 ? (
+          <Text textAlign="center" fontSize="xl" color="gray.500">
+            No boats available.
+          </Text>
+        ) : (
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacingX='40px' spacingY='20px'>
+              {boats.map((boat) => (
+                <Box
+                  key={boat.id}
+                  p={5}
+                  shadow='md' 
+                  borderWidth='1px'
+                  borderRadius='lg'
+                  backgroundColor="white"
+                  cursor="pointer"
+                  _hover={{ boxShadow: "lg", bg:"gray.100", transition: "all 0.2s ease-in-out" }}
+                  onClick={() => handleViewDetails(boat.id)}
+                >
+                  <Flex justify="space-between" align="center">
+                    <Box>
+                      <Heading fontSize="xl">{boat.name}</Heading>
+                      <Text mt={2} color="gray.600">
+                        {boat.description}
+                      </Text>
+                    </Box>
+                    <Stack direction='row' spacing={2} align='center'>
+                      <IconButton 
+                        onClick={(e) => handleEdit(e, boat.id)}
+                        aria-label='Edit Boat'
+                        icon={<EditIcon/>}
+                        size="sm"/>
+                      <IconButton 
+                        onClick={(e) => handleDelete(e, boat.id)}
+                        aria-label='Delete Boat'
+                        icon={<DeleteIcon/>}
+                        size="sm"/>
+                    </Stack>
+                  </Flex>
                 </Box>
-                <Stack direction='row' spacing={2} align='center'>
-                  <IconButton 
-                    onClick={(e) => handleEdit(e, boat.id)}
-                    aria-label='Edit Boat'
-                    icon={<EditIcon/>}
-                    size="sm"/>
-                  <IconButton 
-                    onClick={(e) => handleDelete(e, boat.id)}
-                    aria-label='Delete Boat'
-                    icon={<DeleteIcon/>}
-                    size="sm"/>
-                </Stack>
-              </Flex>
-            </Box>
-          ))}
-        </Stack>
-      )}
+              ))}
+          </SimpleGrid>
+        )}
+      </Box>
     </Box>
   );
 }

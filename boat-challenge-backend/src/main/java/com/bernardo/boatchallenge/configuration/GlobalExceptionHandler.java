@@ -3,7 +3,7 @@ package com.bernardo.boatchallenge.configuration;
 import com.bernardo.boatchallenge.dto.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     // Handle AuthExceptions
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler {
         if (ex instanceof BadCredentialsException) {
             message = "Invalid username or password.";
         }
-
+        log.error("Authentication error: {}", message, ex);
         ErrorResponse errorResponse = new ErrorResponse(message, HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -48,7 +49,7 @@ public class GlobalExceptionHandler {
                 objectMapper.writeValueAsString(errors),
                 HttpStatus.BAD_REQUEST.value()
         );
-
+        log.error("Validation error: {}", errors, ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -59,7 +60,7 @@ public class GlobalExceptionHandler {
                     "Duplicate object found",
                     HttpStatus.BAD_REQUEST.value()
             );
-
+            log.error("Data integrity violation: Duplicate object found", ex);
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
@@ -73,6 +74,7 @@ public class GlobalExceptionHandler {
                 "An error occurred: " + ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
+        log.error("General error: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

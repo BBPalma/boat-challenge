@@ -92,9 +92,10 @@ const AddOrUpdateBoat: React.FC = () => {
 
     return (
       <Box p={8}>
-        <Heading mb={6}>{isEditMode ? 'Update Boat' : 'Add New Boat'}</Heading>
+        <Heading>{isEditMode ? 'Update Boat' : 'Add New Boat'}</Heading>
         <BoatForm 
-            onSubmit={handleSubmit} 
+            onSubmit={handleSubmit}
+            onCancel={() => navigate(-1)}
             initialData={boatContent}/>    
       </Box>
     );

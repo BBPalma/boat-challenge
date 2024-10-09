@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Boat } from '../../types/boat';
 import { fetchBoatById } from '../../services/boat';
-import { useToast, Box, Heading, Button, Text, HStack, IconButton } from '@chakra-ui/react';
+import { useToast, Box, Heading, Button, Text, HStack, IconButton, Stack, Flex } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 
 const BoatDetails: React.FC = () => {
@@ -39,9 +39,9 @@ const BoatDetails: React.FC = () => {
   return (
     <Box p={8}>
       {boat ? (
-        <>
-          <HStack spacing='24px'>
-            <Heading mb={6}>{boat.name}</Heading>
+        <Stack spacing={5}>
+          <HStack spacing='24px' alignItems="center">
+            <Heading>{boat.name}</Heading>
             <IconButton
                   onClick={() => navigate(`/boats/edit/${boat.id}`)}
                   aria-label='Edit Boat'
@@ -49,21 +49,22 @@ const BoatDetails: React.FC = () => {
                   size="sm"/>
           </HStack>
           <Text fontSize="lg" mb={4}>
-            Description: {boat.description}
+            <strong>Description:</strong> {boat.description}
           </Text>
           {boat.date && 
             <Text fontSize="lg" mb={4}>
-              Date: {boat.date.toString()}
+              <strong>Date:</strong> {boat.date.toString()}
             </Text>}
-
           {boat.length &&
             <Text fontSize="lg" mb={4}>
-              Description: {boat.length} meters
+              <strong>Length:</strong> {boat.length} meters
             </Text>}
-          <Button size="md" onClick={() => handleBackToList()}>
-            Back to List
-          </Button>
-        </>
+          <Flex justifyContent="flex-end">
+            <Button size="md" onClick={() => handleBackToList()}>
+              Back to List
+            </Button>
+          </Flex>
+        </Stack>
       ) : (
         <Text>Boat details not available.</Text>
       )}

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -47,27 +48,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 username = jwtUtil.extractUsername(token);
             } catch (ExpiredJwtException e) {
                 // Here, we handle the ExpiredJwtException and send a nice error response
-                handleJwtException(response, "Session has expired. Please log in again.");
+                handleAuthException(response, "Session has expired. Please log in again.");
                 return;  // Stop further processing
             } catch (Exception e) {
-                handleJwtException(response, "Token validation failed");
+                handleAuthException(response, "Token validation failed");
                 return;  // Stop further processing
             }
         }
 
         // If the token is valid and no authentication is set in the context
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            // Validate token and set authentication
-            if (jwtUtil.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                // Validate token and set authentication
+                if (jwtUtil.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            } catch (UsernameNotFoundException e) {
+                handleAuthException(response, e.getMessage());
+                return;  // Stop further processing
             }
         }
 
@@ -75,8 +81,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Helper method to send the error response when JWT exception occurs
-    private void handleJwtException(HttpServletResponse response, String message) throws IOException {
+    // Helper method to send the error response when Auth exceptions occur
+    private void handleAuthException(HttpServletResponse response, String message) throws IOException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 

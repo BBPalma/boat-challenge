@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, HStack, Input, Stack } from "@chakra-ui/react";
 import { BoatContent } from "../../types/boat";
 
 interface BoatFormProps {
     initialData?: BoatContent;
     onSubmit: (data: BoatContent) => Promise<void>;
+    onCancel: () => void;
   }
 
-const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", description: "" }, onSubmit }) => {
+const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", description: "" }, onSubmit, onCancel}) => {
     const [formState, setFormState] = useState(initialData);
-
+    
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormState({
           ...formState,
@@ -59,14 +60,22 @@ const BoatForm: React.FC<BoatFormProps> = ({ initialData = { name: "", descripti
               <FormLabel>Length</FormLabel>
               <Input
                 name="length"
+                type="number"
                 value={formState.length}
                 onChange={handleInputChange}
                 placeholder="Boat length"
               />
             </FormControl>
-            <Button type="submit">
-              Save Boat
-            </Button>
+            <Flex justifyContent="flex-end">
+              <HStack spacing='24px'>
+                <Button type="submit">
+                  Save Boat
+                </Button>
+                <Button onClick={() => onCancel()}>
+                  Cancel
+                </Button>
+              </HStack>
+            </Flex>
           </Stack>
         </form>
       </Box>

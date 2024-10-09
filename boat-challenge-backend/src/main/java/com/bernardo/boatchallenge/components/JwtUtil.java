@@ -39,7 +39,7 @@ public class JwtUtil {
                 .claims().add(claims).and()
                 .subject(userName)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token valid for 30 minutes
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token valid for 5 hours
                 .signWith(getSignKey())
                 .compact();
     }

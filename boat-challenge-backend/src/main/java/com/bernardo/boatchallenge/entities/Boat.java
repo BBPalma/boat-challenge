@@ -27,5 +27,5 @@ public class Boat {
     @Column(name="`DATE`")
     private Date date;
 
-    private String length;
+    private Float length;
 }

@@ -15,8 +15,9 @@ const PasswordInput: React.FC<PasswordInputProps > = ({ onChange }) => {
         <Input
           pr='4.5rem'
           type={show ? 'text' : 'password'}
-          placeholder='Enter password'
+          placeholder='Enter password (min. 12 characters)'
           onChange={onChange}
+          minLength={12}
         />
         <InputRightElement >
           <IconButton
